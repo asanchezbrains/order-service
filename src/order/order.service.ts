@@ -30,7 +30,7 @@ export class OrderService {
 
       let query = `store.responsableEmail = "${clientEmail}"`
 
-      if (Object.values(request).every((ele) => ele == '')){
+      if (!Object.values(request).every((ele) => ele == '')){
         console.log("con filtros")
         query = `${query} AND( order.serviceType = :serviceType
           OR order.comuna = :comuna
