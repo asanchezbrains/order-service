@@ -1,0 +1,13 @@
+@startuml
+autonumber "<b>[00]"
+actor cliente
+participant Servicio
+database mysql
+
+== Order Service ==
+cliente -> Servicio : consulta ordenes dado un email de cliente
+note right
+    <size: 9>https://devapigw.bluex.cl//api/integrations/orders/v1/correo@correo.com/
+end note
+Servicio -> mysql : busca ordenes segun filtros
+@enduml

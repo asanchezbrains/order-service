@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Api de integración orders 
+  description: Api de integración orders
+  version: "1.0.0"
+  contact:
+    name: Célula Saturno
+    email: daniel.parada@2brains.cl
+servers:
+  - url: http://localhost:3000
+    description: Local Enviroment
+  - url: https://devapigw.bluex.cl
+    description: Develop Enviroment
+tags:
+  - name: order
+    description: Integración de ordenes
+  - name: tracking
+    description: Integración de ordenes
+paths:
+    /orders/{clientEmail}:
+        parameters:
+            - name: clientEmail
+              description: email of client
+              in: path
+              required: true
+              schema:
+                  $ref: "#/components/schemas/clientEmail"
+        get:
+            summary: Read orders
+            responses:
+                "200":
+                    description: The orders corresponding to the provided `clientEmail`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/order"
+                404:
+                    description: No orders found for the provided `clientEmail`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /orders/{clientEmail}/{orderId}:
+        parameters:
+            - name: clientEmail
+              description: email of client
+              in: path
+              required: true
+              schema:
+                  $ref: "#/components/schemas/clientEmail"
+            - name: orderId
+              description: The unique identifier of the order
+              in: path
+              required: true
+              schema:
+                  $ref: "#/components/schemas/ordertId"
+        get:
+            summary: Read a order
+            responses:
+                "200":
+                    description: The order corresponding to the provided `clientEmail`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/order"
+                404:
+                    description: No order found for the provided `clientEmail`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+components:
+    schemas:
+        clientEmail:
+            description: The unique identifier of a client
+            type: string
+        orderId:
+            description: The unique identifier of a order
+            type: string
+        order:
+            type: object
+            required:
+                - id
+                - store_id
+            properties:
+                id:
+                    type: number
+                store_id:
+                    type: number
+                created_at:
+                    type: string
+                trackingNumber:
+                    type: string
+                orderId:
+                    type: string
+                customerFullName:
+                    type: string
+                serviceType:
+                    type: string
+                trackingStatus:
+                    type: string
+                estado:
+                    type: string
+                ciudad:
+                    type: string
+                comuna:
+                    type: string
+                store:
+                    type: object
+                    properties:
+                        id:
+                            type: number
+                        type:
+                            type: string
+                        user_id:
+                            type: number
+        Error:
+            type: object
+            required:
+                - message
+            properties:
+                message:
+                    description: A human readable error message
+                    type: string
